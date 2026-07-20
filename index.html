@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" x-data="app()" :class="{'dark':dark}" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sithara Nirmal — Undergraduate Data Science student at SLTC Research University with skills in Python, SQL, Java, Machine Learning, and Business Analytics.">
+<meta name="keywords" content="Sithara Nirmal, Data Science, SLTC, Portfolio, Python, SQL, Java, Machine Learning">
+<meta name="author" content="Sithara Nirmal">
+<meta property="og:title" content="Sithara Nirmal — Data Science Undergraduate">
+<meta property="og:description" content="Portfolio of Sithara Nirmal, pursuing BSc (Hons) in Data Science at Sri Lanka Technology Campus.">
+<meta property="og:type" content="website">
+<title>Sithara Nirmal — Data Science Undergraduate | SLTC</title>
+
+<!-- Tailwind CSS & Alpine.js -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<!-- Google Fonts & Font Awesome Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { display: ['PT Sans','sans-serif'], body: ['DM Sans','sans-serif'] },
+      colors: { accent: '#38bdf8', 'accent-light': '#0284c7' }
+    }
+  }
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{font-family:'DM Sans',sans-serif}
+h1,h2,h3,h4,h5,h6{font-family:'PT Sans',sans-serif}
+body{transition:background-color .3s,color .3s}
+
+/* noise overlay */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#38bdf8;border-radius:99px}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* nav underline animation */
+.nl{position:relative}
+.nl::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:currentColor;transition:width .22s cubic-bezier(.4,0,.2,1)}
+.nl:hover::after,.nl.on::after{width:100%}
+.nl.on{font-weight:500}
+
+/* shimmer button */
+.shimmer{position:relative;overflow:hidden}
+.shimmer::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:rgba(255,255,255,.18);transform:skewX(-20deg);transition:left .4s cubic-bezier(.4,0,.2,1)}
+.shimmer:hover::after{left:160%}
+
+/* photo frames */
+.pf{overflow:hidden;background:#d4d4d8}
+.pf img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* card hover */
+.card-h{transition:transform .28s cubic-bezier(.4,0,.2,1),border-color .18s}
+.card-h:hover{transform:translateY(-4px)}
+
+/* skill tag */
+.stag{transition:border-color .18s}
+
+[x-cloak]{display:none!important}
+</style>
+</head>
+
+<body class="bg-zinc-950 text-zinc-100 antialiased" x-data="{ chatOpen: false }">
+
+<!-- ═══ NAV ═══ -->
+<header class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+  :class="sc?'bg-zinc-950/90 backdrop-blur-md shadow-sm shadow-black/5':''">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between" aria-label="Main navigation">
+
+    <a href="#hero" class="font-display font-bold text-xl tracking-tight relative z-10 text-white">
+      Sithara<span class="text-accent">.</span>
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8 text-sm" role="list">
+      <li><a href="#hero"      class="nl text-zinc-400 hover:text-white transition-colors" :class="s==='hero'?'on !text-white':''">Home</a></li>
+      <li><a href="#about"     class="nl text-zinc-400 hover:text-white transition-colors" :class="s==='about'?'on !text-white':''">About</a></li>
+      <li><a href="#education" class="nl text-zinc-400 hover:text-white transition-colors" :class="s==='education'?'on !text-white':''">Education</a></li>
+      <li><a href="#skills"    class="nl text-zinc-400 hover:text-white transition-colors" :class="s==='skills'?'on !text-white':''">Skills</a></li>
+      <li><a href="#work"      class="nl text-zinc-400 hover:text-white transition-colors" :class="s==='work'?'on !text-white':''">Projects</a></li>
+      <li><a href="#contact"   class="nl text-zinc-400 hover:text-white transition-colors" :class="s==='contact'?'on !text-white':''">Contact</a></li>
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <!-- Hire/Contact me -->
+      <a href="#contact" class="hidden md:inline-flex items-center gap-2 shimmer bg-accent text-zinc-950 font-semibold text-sm px-5 py-2 rounded-full hover:bg-accent-light transition-colors">
+        Contact Me <i class="fas fa-arrow-right text-xs"></i>
+      </a>
+      <!-- Mobile menu hamburger -->
+      <button @click="mm=!mm" class="md:hidden w-9 h-9 flex items-center justify-center rounded-full border border-zinc-800" :aria-expanded="mm" aria-label="Toggle menu">
+        <svg x-show="!mm" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg x-show="mm"  class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div x-show="mm" x-cloak
+    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
+    class="md:hidden bg-zinc-950 border-t border-zinc-900">
+    <ul class="flex flex-col px-6 py-5 gap-4 text-sm font-medium" role="list">
+      <li><a href="#hero"      @click="mm=false" class="block text-zinc-300 hover:text-accent transition-colors">Home</a></li>
+      <li><a href="#about"     @click="mm=false" class="block text-zinc-300 hover:text-accent transition-colors">About</a></li>
+      <li><a href="#education" @click="mm=false" class="block text-zinc-300 hover:text-accent transition-colors">Education</a></li>
+      <li><a href="#skills"    @click="mm=false" class="block text-zinc-300 hover:text-accent transition-colors">Skills</a></li>
+      <li><a href="#work"      @click="mm=false" class="block text-zinc-300 hover:text-accent transition-colors">Projects</a></li>
+      <li><a href="#contact"   @click="mm=false" class="block text-zinc-300 hover:text-accent transition-colors">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+  <div class="absolute top-1/4 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-1/4 left-0 w-64 h-64 bg-zinc-800/30 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  
+  <div class="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+      <div>
+        <p class="reveal text-sm font-medium text-accent tracking-widest uppercase mb-2">Hello, I'm</p>
+        <h1 class="reveal d1 font-display font-bold text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-white mb-4">
+          Sithara <span class="text-accent">Nirmal</span>
+        </h1>
+        <h2 class="reveal d2 text-xl md:text-2xl font-medium text-zinc-300 mb-6">
+          Data Science Undergraduate
+        </h2>
+        <p class="reveal d2 text-base text-zinc-400 font-light leading-relaxed max-w-md mb-8">
+          Pursuing a BSc (Hons) in Data Science at Sri Lanka Technology Campus (SLTC). Passionate about Data Science, Business Analytics, and Software Development using Python, Java, SQL, and modern web technologies.
+        </p>
+        
+        <div class="reveal d3 flex flex-wrap gap-4 items-center">
+          <a href="#work" class="shimmer inline-flex items-center gap-2 bg-accent text-zinc-950 font-semibold px-7 py-3.5 rounded-full hover:bg-accent-light transition-colors text-sm">
+            View Projects
+            <i class="fas fa-arrow-down text-xs"></i>
+          </a>
+          
+          <!-- CV DOWNLOAD BUTTON -->
+          <a href="C:\Users\EX BOOK\Desktop\portfolio\sitharanirmal_resume.pdf" download="Sithara_Nirmal_CV.pdf" class="inline-flex items-center gap-2 border border-zinc-700 text-zinc-300 font-medium px-7 py-3.5 rounded-full hover:bg-zinc-900 transition-colors text-sm">
+            <i class="fas fa-download"></i> Download CV
+          </a>
+        </div>
+
+        <div class="reveal d4 flex gap-4 mt-8">
+          <a href="https://github.com/sitharaNirmal" target="_blank" class="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-accent hover:border-accent transition-colors">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/sithara-nirmal-3a0002418" target="_blank" class="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-accent hover:border-accent transition-colors">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="mailto:cit-25-02-0431@sltc.edu.lk" class="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-accent hover:border-accent transition-colors">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal d2 flex justify-center md:justify-end">
+        <div class="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+          <div class="pf w-full h-full rounded-full border-4 border-accent shadow-[0_0_40px_rgba(56,189,248,0.3)]">
+            <img src="C:\Users\EX BOOK\Desktop\portfolio\image3.png" alt="Sithara Nirmal" loading="eager" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80'">
+          </div>
+          <div class="absolute -bottom-2 -left-2 bg-accent text-zinc-950 font-display font-bold text-xs px-4 py-2 rounded-2xl shadow-lg">Data Science @ SLTC</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about" class="py-24 bg-zinc-900/40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+
+      <div class="reveal order-2 md:order-1 flex justify-center">
+        <div class="pf w-72 h-72 rounded-full border-4 border-accent shadow-[0_0_20px_rgba(56,189,248,0.2)]">
+          <img src="C:\Users\EX BOOK\Desktop\portfolio\image4.png" alt="Sithara Nirmal" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=80'">
+        </div>
+      </div>
+
+      <div class="order-1 md:order-2">
+        <p class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">About me</p>
+        <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-white leading-tight mb-6">Data Science Undergraduate</h2>
+        <p class="reveal d2 text-zinc-400 leading-relaxed mb-4">
+          I am Sithara Nirmal, a passionate Data Science undergraduate currently pursuing a Bachelor of Science (Honours) in Data Science at Sri Lanka Technology Campus (SLTC).
+        </p>
+        <p class="reveal d3 text-zinc-400 leading-relaxed mb-6">
+          I have a strong interest in Data Science, Business Analytics, Machine Learning, and Software Development. I enjoy transforming data into meaningful insights and building efficient software solutions.
+        </p>
+
+        <div class="reveal d4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-zinc-300">
+          <div><span class="text-accent font-semibold">Name:</span> Sithara Nirmal</div>
+          <div><span class="text-accent font-semibold">Degree:</span> BSc (Hons) Data Science</div>
+          <div><span class="text-accent font-semibold">University:</span> SLTC Research University</div>
+          <div><span class="text-accent font-semibold">Location:</span> Sri Lanka</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EDUCATION ═══ -->
+<section id="education" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="mb-14">
+      <p class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">Academic Background</p>
+      <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-white">Education</h2>
+    </div>
+
+    <div class="flex flex-col gap-6 max-w-4xl">
+
+      <div class="reveal d1 bg-zinc-900 border-l-4 border-accent p-8 rounded-r-2xl transition-transform hover:translate-x-2">
+        <h3 class="text-2xl font-bold text-accent mb-1">BSc (Hons) in Data Science</h3>
+        <h4 class="text-lg font-medium text-white mb-2">Sri Lanka Technology Campus (SLTC)</h4>
+        <p class="text-xs text-zinc-400 uppercase tracking-wider mb-3">2026 - Present</p>
+        <p class="text-sm text-zinc-300 leading-relaxed">
+          Currently pursuing a Bachelor of Science (Honours) in Data Science focusing on Data Analytics, Machine Learning, Programming, and Business Intelligence.
+        </p>
+      </div>
+
+      <div class="reveal d2 bg-zinc-900 border-l-4 border-accent p-8 rounded-r-2xl transition-transform hover:translate-x-2">
+        <h3 class="text-2xl font-bold text-accent mb-1">G.C.E Advanced Level</h3>
+        <h4 class="text-lg font-medium text-white mb-2">Physical Science Stream</h4>
+        <p class="text-xs text-zinc-400 uppercase tracking-wider mb-3">Results: B, C, C</p>
+        <p class="text-sm text-zinc-300 leading-relaxed">
+          Completed Advanced Level studies with a strong foundation in Mathematics and Physical Sciences.
+        </p>
+      </div>
+
+      <div class="reveal d3 bg-zinc-900 border-l-4 border-accent p-8 rounded-r-2xl transition-transform hover:translate-x-2">
+        <h3 class="text-2xl font-bold text-accent mb-1">G.C.E Ordinary Level</h3>
+        <h4 class="text-lg font-medium text-white mb-2">Secondary Education</h4>
+        <p class="text-xs text-zinc-400 uppercase tracking-wider mb-3">Results: 8A, B</p>
+        <p class="text-sm text-zinc-300 leading-relaxed">
+          Successfully completed Ordinary Level education with excellent academic performance.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section id="skills" class="py-24 bg-zinc-900/40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="mb-14">
+      <p class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">Proficiency</p>
+      <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-white">Technical Skills</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl">
+
+      <!-- Skill 1 -->
+      <div class="reveal d1">
+        <div class="flex justify-between text-sm font-medium mb-2">
+          <span class="text-white">Python</span>
+          <span class="text-accent">90%</span>
+        </div>
+        <div class="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: 90%;"></div>
+        </div>
+      </div>
+
+      <!-- Skill 2 -->
+      <div class="reveal d2">
+        <div class="flex justify-between text-sm font-medium mb-2">
+          <span class="text-white">SQL</span>
+          <span class="text-accent">85%</span>
+        </div>
+        <div class="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: 85%;"></div>
+        </div>
+      </div>
+
+      <!-- Skill 3 -->
+      <div class="reveal d3">
+        <div class="flex justify-between text-sm font-medium mb-2">
+          <span class="text-white">Data Analysis</span>
+          <span class="text-accent">85%</span>
+        </div>
+        <div class="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: 85%;"></div>
+        </div>
+      </div>
+
+      <!-- Skill 4 -->
+      <div class="reveal d4">
+        <div class="flex justify-between text-sm font-medium mb-2">
+          <span class="text-white">Java</span>
+          <span class="text-accent">80%</span>
+        </div>
+        <div class="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: 80%;"></div>
+        </div>
+      </div>
+
+      <!-- Skill 5 -->
+      <div class="reveal d1">
+        <div class="flex justify-between text-sm font-medium mb-2">
+          <span class="text-white">HTML &amp; CSS</span>
+          <span class="text-accent">90%</span>
+        </div>
+        <div class="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: 90%;"></div>
+        </div>
+      </div>
+
+      <!-- Skill 6 -->
+      <div class="reveal d2">
+        <div class="flex justify-between text-sm font-medium mb-2">
+          <span class="text-white">JavaScript</span>
+          <span class="text-accent">75%</span>
+        </div>
+        <div class="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: 75%;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WORK / PROJECTS ═══ -->
+<section id="work" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
+      <div>
+        <p class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">Portfolio</p>
+        <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-white">Selected Projects</h2>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- Project 1 -->
+      <article class="card-h reveal d1 group rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-accent">
+        <div class="pf w-full h-56">
+          <img src="image 01.png" alt="MATLAB and Python Project" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1551650975-87deedd944c3?w=900&q=80'">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs bg-zinc-800 text-accent border border-zinc-700 px-3 py-1 rounded-full">Python</span>
+            <span class="text-xs bg-zinc-800 text-accent border border-zinc-700 px-3 py-1 rounded-full">MATLAB</span>
+            <span class="text-xs bg-zinc-800 text-zinc-400 px-3 py-1 rounded-full">Algorithms</span>
+          </div>
+          <h3 class="font-display font-bold text-2xl text-white mb-3">MATLAB &amp; Python Mathematical Applications</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-6">
+            Developed mathematical and computational solutions using MATLAB and Python. Implemented algorithms, mathematical models, data processing techniques, and visualizations to solve real-world computing problems.
+          </p>
+          <a href="#" class="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline">View Project <i class="fas fa-arrow-right text-xs"></i></a>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="card-h reveal d2 group rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-accent">
+        <div class="pf w-full h-56">
+          <img src="image2.png" alt="SLTC Student Record Management System" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80'">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs bg-zinc-800 text-accent border border-zinc-700 px-3 py-1 rounded-full">Python</span>
+            <span class="text-xs bg-zinc-800 text-accent border border-zinc-700 px-3 py-1 rounded-full">Tkinter</span>
+            <span class="text-xs bg-zinc-800 text-zinc-400 px-3 py-1 rounded-full">Database Management</span>
+          </div>
+          <h3 class="font-display font-bold text-2xl text-white mb-3">SLTC Student Record Management System</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-6">
+            Developed a desktop application using Python and the Tkinter library to handle, organize, and automate student data entry workflows seamlessly with an intuitive GUI interface.
+          </p>
+          <a href="#" class="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline">View Project <i class="fas fa-arrow-right text-xs"></i></a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="py-24 bg-zinc-900/40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="bg-zinc-900 rounded-3xl p-10 md:p-16 relative overflow-hidden border border-zinc-800">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+      <div class="relative z-10 grid md:grid-cols-2 gap-12 items-start">
+
+        <div>
+          <p class="reveal text-xs font-medium text-accent tracking-widest uppercase mb-3">Get in touch</p>
+          <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-white leading-tight mb-5">Let's Connect</h2>
+          <p class="reveal d2 text-zinc-400 leading-relaxed mb-8">
+            I am open to opportunities, collaborations, and discussions related to Data Science, Business Analytics, and Software Development.
+          </p>
+
+          <div class="reveal d3 flex flex-col gap-4">
+            <a href="mailto:cit-25-02-0431@sltc.edu.lk" class="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+              <span class="w-9 h-9 flex items-center justify-center bg-zinc-800 rounded-lg group-hover:bg-accent/20 transition-colors shrink-0">
+                <i class="fas fa-envelope text-accent"></i>
+              </span>
+              <span class="text-sm">cit-25-02-0431@sltc.edu.lk</span>
+            </a>
+            <a href="https://www.linkedin.com/in/sithara-nirmal-3a0002418" target="_blank" class="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+              <span class="w-9 h-9 flex items-center justify-center bg-zinc-800 rounded-lg group-hover:bg-accent/20 transition-colors shrink-0">
+                <i class="fab fa-linkedin text-accent"></i>
+              </span>
+              <span class="text-sm">LinkedIn Profile</span>
+            </a>
+            <a href="https://github.com/sitharaNirmal" target="_blank" class="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+              <span class="w-9 h-9 flex items-center justify-center bg-zinc-800 rounded-lg group-hover:bg-accent/20 transition-colors shrink-0">
+                <i class="fab fa-github text-accent"></i>
+              </span>
+              <span class="text-sm">github.com/sitharaNirmal</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal d2">
+          <form action="#" method="POST" @submit.prevent>
+            <div class="flex flex-col gap-4">
+              <div>
+                <label class="block text-xs font-medium text-zinc-400 mb-1.5">Name *</label>
+                <input type="text" placeholder="Your Name" required
+                  class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-zinc-400 mb-1.5">Email *</label>
+                <input type="email" placeholder="Your Email" required
+                  class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-zinc-400 mb-1.5">Message *</label>
+                <textarea rows="4" placeholder="Your Message..." required
+                  class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-accent transition-colors resize-none"></textarea>
+              </div>
+              <button type="submit" class="shimmer w-full bg-accent text-zinc-950 font-bold text-sm py-3.5 rounded-xl hover:bg-accent-light transition-colors">
+                Send Message
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ AI CHATBOT WIDGET ═══ -->
+<div class="fixed bottom-6 right-6 z-50">
+  <!-- Chatbot Trigger Button -->
+  <button @click="chatOpen = !chatOpen" class="w-14 h-14 bg-accent text-zinc-950 rounded-full flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:bg-accent-light transition-transform active:scale-95">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <!-- Chat Window -->
+  <div x-show="chatOpen" x-cloak
+    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-4 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+    x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-4 scale-95"
+    class="absolute bottom-16 right-0 w-80 sm:w-96 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[420px]">
+    
+    <!-- Chat Header -->
+    <div class="bg-accent text-zinc-950 px-4 py-3 font-bold flex justify-between items-center text-sm">
+      <span>Sithara AI Assistant 🤖</span>
+      <button @click="chatOpen = false" class="text-zinc-950 hover:text-zinc-700"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chatbody" class="flex-1 p-4 overflow-y-auto text-xs text-zinc-300 space-y-3">
+      <div class="bg-zinc-800 p-3 rounded-lg max-w-[85%]">
+        Hello! I am Sithara's AI assistant. Ask me about his skills, education, or projects.
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="p-3 bg-zinc-950 border-t border-zinc-800 flex gap-2">
+      <input type="text" id="userInput" @keydown.enter="sendMessage()" placeholder="Ask something..." class="flex-1 bg-zinc-800 text-white text-xs px-3 py-2 rounded-lg outline-none focus:border focus:border-accent">
+      <button onclick="sendMessage()" class="bg-accent text-zinc-950 px-3 py-2 rounded-lg text-xs font-bold hover:bg-accent-light transition-colors">
+        ➤
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer class="border-t border-zinc-900">
+  <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-zinc-400">© <span id="yr"></span> Sithara Nirmal. All rights reserved.</p>
+    <p class="text-xs text-zinc-500">Built with Tailwind CSS &amp; Alpine.js</p>
+  </div>
+</footer>
+
+<script>
+function app() {
+  return {
+    dark: true,
+    mm: false,
+    sc: false,
+    s: 'hero',
+
+    init() {
+      // scroll listener
+      window.addEventListener('scroll', () => {
+        this.sc = window.scrollY > 20;
+        this.updateSection();
+      }, { passive: true });
+
+      // reveal on scroll
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      // current year
+      document.getElementById('yr').textContent = new Date().getFullYear();
+    },
+
+    updateSection() {
+      const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 60;
+      if (atBottom) { this.s = 'contact'; return; }
+      const ids = ['contact','work','skills','education','about','hero'];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 130) { this.s = id; return; }
+      }
+    }
+  }
+}
+
+// AI Chatbot logic
+function sendMessage() {
+  let input = document.getElementById("userInput");
+  let message = input.value.trim();
+  let chat = document.getElementById("chatbody");
+
+  if (message === "") return;
+
+  // Add user message
+  chat.innerHTML += `<div class="bg-accent/20 border border-accent/40 p-3 rounded-lg text-right text-white ml-auto max-w-[85%]">${message}</div>`;
+
+  let reply = "";
+  let query = message.toLowerCase();
+
+  if (query.includes("name")) {
+    reply = "My name is Sithara Nirmal.";
+  } else if (query.includes("skill") || query.includes("technologies")) {
+    reply = "Sithara's skills include Python, Java, SQL, HTML, CSS, JavaScript, Data Analysis, and Machine Learning.";
+  } else if (query.includes("education") || query.includes("degree") || query.includes("university")) {
+    reply = "Sithara is pursuing a BSc (Hons) in Data Science at Sri Lanka Technology Campus (SLTC).";
+  } else if (query.includes("project")) {
+    reply = "Sithara has built projects like 'SLTC Student Record Management System' (Python/Tkinter) and 'MATLAB & Python Mathematical Applications'.";
+  } else if (query.includes("contact") || query.includes("email")) {
+    reply = "You can reach Sithara at cit-25-02-0431@sltc.edu.lk.";
+  } else {
+    reply = "You can ask me about Sithara's education, skills, projects, or contact details.";
+  }
+
+  // Add AI reply
+  setTimeout(() => {
+    chat.innerHTML += `<div class="bg-zinc-800 p-3 rounded-lg max-w-[85%]">${reply}</div>`;
+    chat.scrollTop = chat.scrollHeight;
+  }, 300);
+
+  input.value = "";
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
